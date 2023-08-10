@@ -17,5 +17,6 @@ class Post(Base):
     comments = relationship('Comment', cascade='all,delete')
     votes = relationship('Vote', backref='post', cascade='all,delete')
 
-    def vote_count(cls):
-        return select([func.count(Vote.id)]).where(Vote.post_id == cls.id).label('vote_count')
+    vote_count = column_property(
+        select((func.count(Vote.id))).where(Vote.post_id == id)
+    )
